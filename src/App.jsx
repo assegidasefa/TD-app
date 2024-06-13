@@ -4,11 +4,29 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState("");
 
+  const addTodoTask = () => {
+    if (newTodo.trim() !== "") {
+      setTodos([...todos, newTodo]);
+    }
+  };
   return (
     <div>
-      <h1 className="bg-red-600">hello world</h1>
+      <input
+        placeholder="please add your todo task"
+        value={newTodo}
+        onChange={(e) => setNewTodo(e.target.value)}
+      />
+
+      <button onClick={addTodoTask}>ADD </button>
+
+      <ul>
+        {todos.map((todo, index) => (
+          <li>{todo}</li>
+        ))}
+      </ul>
     </div>
   );
 }
