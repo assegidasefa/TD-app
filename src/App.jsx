@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+// import "./App.css";
 import { Watermark } from "antd";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
   const addTodoTask = () => {
     if (newTodo.trim() !== "") {
       setTodos([...todos, { text: newTodo, completed: false }]);
-      setNewTodo("");  // Clear input field after adding
+      setNewTodo(""); // Clear input field after adding
     }
   };
 
@@ -18,7 +18,10 @@ function App() {
     const todoToToggle = todos[index];
     if (todoToToggle.completed) {
       setTodos(todos.filter((_, idx) => idx !== index));
-      setCompletedTodos([...completedTodos, { ...todoToToggle, completed: false }]);
+      setCompletedTodos([
+        ...completedTodos,
+        { ...todoToToggle, completed: false },
+      ]);
     } else {
       const updatedTodos = todos.map((todo, idx) =>
         idx === index ? { ...todo, completed: !todo.completed } : todo
@@ -32,51 +35,61 @@ function App() {
   };
 
   return (
-    <Watermark content="Assegid Assefa">
+    // <Watermark content="Assegid Assefa" className="p-5">
+      <div className="flex flex-col justify-start items-center h-screen  w-full p-2">
+        <div className=" w-1/2 flex justify-between gap-4 mb-4">
+          <input
+            className=" bg-gray-500 h-full w-full rounded-md border-gray-900 "
+            placeholder="Please add your todo task"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+          />
+          <button onClick={addTodoTask} className="bg-blue-500 p-5 rounded-lg px-9">ADD</button>
+        </div>
+        <div className="flex w-full justify-between gap-4 p-2">
+          <div className="w-1/2 bg-yellow-50">
+            <h2>Todos</h2>
+            <ul>
+              {todos.map((todo, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center mb-2"
+                >
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleCompleteTask(index)}
+                  />
+                  <span
+                    style={{
+                      textDecoration: todo.completed ? "line-through" : "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {todo.text}
+                  </span>
+                  <button onClick={() => removeTodoTask(index)}>Remove</button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-    <div className="flex flex-col justify-center items-center h-screen">
-      <div className="border-2 w-1/2 flex justify-between gap-4 mb-4">
-        <input
-          className="bg-red-600 w-3/4 rounded-md"
-          placeholder="Please add your todo task"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-        />
-        <button onClick={addTodoTask}>ADD</button>
+          <div className="w-1/2 mt-4">
+            <h2>Completed Tasks</h2>
+            <ul>
+              {completedTodos.map((todo, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center mb-2"
+                >
+                  <span>{todo.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-      <div className="w-1/2">
-        <h2>Todos</h2>
-        <ul>
-          {todos.map((todo, index) => (
-            <li key={index} className="flex justify-between items-center mb-2">
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => toggleCompleteTask(index)}
-              />
-              <span
-                style={{ textDecoration: todo.completed ? "line-through" : "none", cursor: "pointer" }}
-              >
-                {todo.text}
-              </span>
-              <button onClick={() => removeTodoTask(index)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="w-1/2 mt-4">
-        <h2>Completed Tasks</h2>
-        <ul>
-          {completedTodos.map((todo, index) => (
-            <li key={index} className="flex justify-between items-center mb-2">
-              <span>{todo.text}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-    </Watermark>
-
+    // </Watermark>
   );
 }
 
